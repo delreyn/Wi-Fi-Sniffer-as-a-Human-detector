@@ -1,6 +1,5 @@
 # Wi-Fi Sniffer as a Human detector
 
-This is the Material for video: https://www.youtube.com/watch?v=fmhjtzmLrg8
 
 Things to do before you start:
 - In mqtt.h update mqttServer = "Your Broker IP address"

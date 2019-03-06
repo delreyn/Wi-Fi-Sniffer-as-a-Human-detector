@@ -43,8 +43,8 @@ int nbrDevices = 0;
 int usedChannels[15];
 
 #ifndef CREDENTIALS
-#define mySSID "*****"
-#define myPASSWORD "******"
+#define mySSID "WihouseR"
+#define myPASSWORD "reyray09"
 #endif
 
 StaticJsonBuffer<JBUFFER>  jsonBuffer;
@@ -52,8 +52,8 @@ StaticJsonBuffer<JBUFFER>  jsonBuffer;
 void setup() {
   Serial.begin(115200);
   Serial.printf("\n\nSDK version:%s\n\r", system_get_sdk_version());
-  Serial.println(F("Human detector by Andreas Spiess. ESP8266 mini-sniff by Ray Burnette http://www.hackster.io/rayburne/projects"));
-  Serial.println(F("Based on the work of Ray Burnette http://www.hackster.io/rayburne/projects"));
+  Serial.println(F("Human detector by Reyne Jasson. "));
+  Serial.println(F("Based on the work of Ray Burnette and Andreas Spiess http://www.hackster.io/rayburne/projects"));
 
   wifi_set_opmode(STATION_MODE);            // Promiscuous works only with station mode
   wifi_set_channel(channel);
@@ -149,7 +149,7 @@ void showDevices() {
   Serial.println("-------------------Device DB-------------------");
   Serial.printf("%4d Devices + Clients.\n",aps_known_count + clients_known_count); // show count
 
-  // show Beacons
+   //show Beacons
   for (int u = 0; u < aps_known_count; u++) {
     Serial.printf( "%4d ",u); // Show beacon number
     Serial.print("B ");
@@ -182,7 +182,7 @@ void sendDevices() {
   while (!client.connected()) {
     Serial.println("Connecting to MQTT...");
 
-    if (client.connect("ESP32Client", "admin", "admin" )) {
+    if (client.connect("ESP32Client" )) {
       Serial.println("connected");
     } else {
       Serial.print("failed with state ");
@@ -195,13 +195,13 @@ void sendDevices() {
   jsonBuffer.clear();
   JsonObject& root = jsonBuffer.createObject();
   JsonArray& mac = root.createNestedArray("MAC");
-  // JsonArray& rssi = root.createNestedArray("RSSI");
+  JsonArray& rssi = root.createNestedArray("RSSI");
 
   // add Beacons
   for (int u = 0; u < aps_known_count; u++) {
     deviceMac = formatMac1(aps_known[u].bssid);
     if (aps_known[u].rssi > MINRSSI) {
-      mac.add(deviceMac);
+     // mac.add(deviceMac);
       //    rssi.add(aps_known[u].rssi);
     }
   }
@@ -211,7 +211,7 @@ void sendDevices() {
     deviceMac = formatMac1(clients_known[u].station);
     if (clients_known[u].rssi > MINRSSI) {
       mac.add(deviceMac);
-      //    rssi.add(clients_known[u].rssi);
+      rssi.add(clients_known[u].rssi);
     }
   }
 
